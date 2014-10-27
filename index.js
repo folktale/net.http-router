@@ -2,7 +2,7 @@
 
 var Future = require('data.future');
 
-module.exports = function makeRouter(route, handler, parent) {
+module.exports = exports = function makeRouter(route, handler, parent) {
   var router = function routeHandler(oreq, ores, onext) {
     if (!onext) {
       onext = function next(req, res) {
@@ -75,8 +75,29 @@ module.exports = function makeRouter(route, handler, parent) {
       route = route.slice(0, -1);
     }
 
-    return makeRouter(route, fn, this);
+    return makeRouter(route, fn, router);
+  };
+
+  router.useAll = function(routes) {
+    return reduce(function(router, route) {
+      if (typeof route === 'function') {
+        return router.use(route);
+      } else {
+        return router.use(route[0], route[1]);
+      }
+    }, router, routes);
   };
 
   return router;
 };
+
+function reduce(fn, data, array) {
+  var index = -1;
+  var length = array.length;
+
+  while (index++ < length) {
+    data = fn(data, array[index]);
+  }
+
+  return data;
+}
