@@ -13,7 +13,7 @@
   ],
   "author": "Tenor Biel <tenorbiel@gmail.com>",
   "bugs": {
-    "url": "https://github.com/L8D/network.http-router"
+    "url": "https://github.com/L8D/network.http-router/issues"
   },
   "dependencies": {
     "data.future": "^2.3.0"
