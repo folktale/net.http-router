@@ -1,0 +1,21 @@
+{
+  "name": "network.http-router",
+  "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/L8D/network.http-router"
+  },
+  "license": "MIT",
+  "description": "A small routing framework for network.http-server.",
+  "keywords": [
+    "fantasy-land",
+    "folktale"
+  ],
+  "author": "Tenor Biel <tenorbiel@gmail.com>",
+  "bugs": {
+    "url": "https://github.com/L8D/network.http-router"
+  },
+  "dependencies": {
+    "data.future": "^2.3.0"
+  }
+}
