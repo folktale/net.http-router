@@ -1,21 +1,30 @@
 'use strict';
 
 var Future = require('data.future');
+var url = require('url');
+var _ = require('lodash');
 
 module.exports = exports = function makeRouter(route, handler, parent) {
   var router = function routeHandler(oreq, ores, onext) {
-    if (!onext) {
+    if (onext == null) {
       onext = function next(req, res) {
         return Future.of(res);
       };
     }
 
-    if (!parent) {
+    if (parent == null) {
+      if (oreq.path == null || oreq.query == null) {
+        var data = url.parse(oreq.url, true);
+
+        oreq.path = data.pathname;
+        oreq.query = data.query;
+      }
+
       return onext(oreq, ores);
     }
 
     return parent(oreq, ores, function next(req, res) {
-      var path = req.get('path');
+      var path = req.path;
 
       // skip if route doesn't match
       if (path.toLowerCase().substr(0, route.length) !== route.toLowerCase()) {
@@ -28,18 +37,22 @@ module.exports = exports = function makeRouter(route, handler, parent) {
         return onext(req, res);
       }
 
+      var removed;
+
       // trim off the part of the url that matches the route
       if (route.length !== 0 && route !== '/') {
-        var removed = route;
-        var fqreq = req
-          .update('url', sliceAtRemoved)
-          .update('path', sliceAtRemoved);
+        removed = route;
+
+        var fqreq = _.clone(req);
+        fqreq.url = sliceAtRemoved(req.url);
+        fqreq.path = sliceAtRemoved(req.path);
 
         return handler(fqreq, res, function next(nreq, nres) {
-          nreq = nreq.update('url', insertRemoved);
-          nreq = nreq.update('path', insertRemoved);
+          var fqreq = _.clone(nreq);
+          fqreq.url = insertRemoved(nreq.url);
+          fqreq.path = insertRemoved(nreq.path);
 
-          return onext(nreq, nreq);
+          return onext(nreq, nres);
         });
       }
 
