@@ -1,6 +1,6 @@
 {
   "name": "network.http-router",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "repository": {
     "type": "git",
     "url": "git://github.com/L8D/network.http-router"
@@ -16,6 +16,14 @@
     "url": "https://github.com/L8D/network.http-router/issues"
   },
   "dependencies": {
-    "data.future": "^2.3.0"
+    "data.future": "^2.3.0",
+    "lodash": "^2.4.1"
+  },
+  "devDependencies": {
+    "jshint": "^2.5.10"
+  },
+  "scripts": {
+    "test": "npm run lint",
+    "lint": "jshint ."
   }
 }
