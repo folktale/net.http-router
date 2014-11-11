@@ -16,6 +16,14 @@
     "url": "https://github.com/L8D/network.http-router/issues"
   },
   "dependencies": {
-    "data.future": "^2.3.0"
+    "data.future": "^2.3.0",
+    "lodash": "^2.4.1"
+  },
+  "devDependencies": {
+    "jshint": "^2.5.10"
+  },
+  "scripts": {
+    "test": "npm run lint",
+    "lint": "jshint ."
   }
 }
